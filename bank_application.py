@@ -12,6 +12,10 @@ import sys
 class BankApp():    
     def __init__(self):
         self.acc_creator()
+    
+    def selecter():
+        acc = input("Please type the accounts name you'd like to select: ")
+        accounts[acc].action()
         
     def menu(self,option_1, option_2, option_3, option_4, option_5):
         print(20*"-","MENU",20*"-")
