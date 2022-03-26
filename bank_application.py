@@ -9,6 +9,8 @@ import saving_account as sa
 import youth_account as ya
 import sys
 
+
+#To test just run this file
 class BankApp():    
     def __init__(self):
         self.acc_creator()
@@ -26,9 +28,10 @@ class BankApp():
         
     def owner(self, name, address, phone, date_of_birth):
         bk.BankAccount.owner(self, name, address, phone, date_of_birth)
-    
-    def selecter():
-        acc = input("Please type the accounts name you'd like to select: ")
+        
+    #After creating an account initally you need to use the selecter to manage the existing accounts or create new ones
+    def selecter(): 
+        acc = input("Please type the accounts name you'd like to manage: ")
         accounts[acc].action()
     
     def action(self):
@@ -51,16 +54,18 @@ class BankApp():
             if self.choice == 3:
                 dict_key = input("Please give your new account a new name.")
                 accounts[dict_key] = BankApp()
+                break
             if self.choice == 4:
                 dict_key = input("Please enter the accounts name. ")
                 accounts.pop(dict_key)
+                break
             if self.choice == 5:
-                self.taxreporter()
+                TaxReport.generate(self)
+                break
             if self.choice == 6:
                 print("Leaving the Menu")
                 del self.choice
                 break
-            
             
     def deleter(self):
         del self.name, self.account_type, self.choice,self.rate, self.address, self.age, self.balance, self.birthdate, self.date_of_birth, self.iban, self.opening_date, self.phone
@@ -84,16 +89,21 @@ class BankApp():
             ya.YouthAccount.__init__(self, self.name, self.address, self.phone, self.date_of_birth)
         else:
             pass
-    
-    def taxreporter(self):
+            
+
+class TaxReport(BankApp):    
+    def generate(self):
         print("Tax report 2022 for fiscal year 2021")
         print("**",self.account_type,"**", self.balance, "CHF")
-        
-        
-        
+
+
 if __name__ == '__main__':
     acc_name = str(input("You don't have an account yet.Enter an account name: "))
     accounts = {acc_name:BankApp()}
     del acc_name
+else:
+    print("BankApp has been imported.")
+    pass
+
 
         
