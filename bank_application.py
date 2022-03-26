@@ -7,6 +7,8 @@ Created on Sun Mar 20 08:58:18 2022
 import bankaccount as bk
 import saving_account as sa
 import youth_account as ya
+from urllib.request import urlopen
+import json
 import sys
 
 
@@ -39,12 +41,18 @@ class BankApp():
             self.menu("Deposit","Withdraw","Create another account","Delete/Close the account","Tax report", "Exit")
             if self.choice == 1:
                 amount = int(input("Please enter the amount you would like to deposit."))
+                if amount < 0:
+                    print("Only positive values allowed.")
+                    break
                 if self.account_type == "Bank account" or self.account_type == "Youth account":
                     bk.BankAccount.deposit(self, amount)
                 if self.account_type == "Saving account":
                     sa.SavingAccount.deposit(self, amount)
             if self.choice == 2:
                 amount = int(input("Please enter the amount you would like to withdraw."))
+                if amount < 0:
+                    print("Only positive values allowed.")
+                    break
                 if self.account_type == "Bank account":    
                     bk.BankAccount.withdraw(self, amount)
                 if self.account_type == "Saving account":
@@ -60,7 +68,7 @@ class BankApp():
                 accounts.pop(dict_key)
                 break
             if self.choice == 5:
-                TaxReport.generate(self)
+                TaxReport(self.account_type, self.balance, self.currency)
                 break
             if self.choice == 6:
                 print("Leaving the Menu")
@@ -81,20 +89,41 @@ class BankApp():
         if self.choice == 1:
             self.account_type = "Bank account"
             bk.BankAccount.__init__(self, self.name, self.address, self.phone, self.date_of_birth)
+            self.currency = input("What currency will you deposit on the account?")
         if self.choice == 2:
             self.account_type = "Saving account"
             sa.SavingAccount.__init__(self, self.name, self.address, self.phone, self.date_of_birth)
+            self.currency = input("What currency will you deposit on the account?")
         if self.choice == 3:
             self.account_type = "Youth account"
             ya.YouthAccount.__init__(self, self.name, self.address, self.phone, self.date_of_birth)
+            self.currency = input("What currency will you deposit on the account?")
         else:
             pass
-            
+        self.currency = self.currency.lower()            
 
 class TaxReport(BankApp):    
-    def generate(self):
+    def __init__(self, account_type, balance, currency):
+        self.currency = currency
+        self.get_exchange_rate(currency)
+        self.generate(account_type, balance, self.exchange_rate)
+        
+    def generate(self, account_type, balance, exchange_rate):
+        print("The used exchange rate from CHF to ",self.currency , exchange_rate)
         print("Tax report 2022 for fiscal year 2021")
-        print("**",self.account_type,"**", self.balance, "CHF")
+        print("**",account_type,"**", round(balance * exchange_rate, 2), "CHF")
+        
+    def get_exchange_rate(self,currency):
+        url = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/chf.json"
+        page = urlopen(url)
+        data_json = json.loads(page.read())
+        del data_json["date"]
+        del page
+        del url
+        self.exchange_rate = data_json["chf"][currency]
+        #return self.exchange_rate
+    
+    
 
 
 if __name__ == '__main__':
