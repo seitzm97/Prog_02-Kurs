@@ -7,8 +7,7 @@ Created on Sun Mar 20 08:58:18 2022
 import bankaccount as bk
 import saving_account as sa
 import youth_account as ya
-from urllib.request import urlopen
-import json
+import get_exchange_rate as ger
 import sys
 
 
@@ -105,26 +104,15 @@ class BankApp():
 class TaxReport(BankApp):    
     def __init__(self, account_type, balance, currency):
         self.currency = currency
-        self.get_exchange_rate(currency)
-        self.generate(account_type, balance, self.exchange_rate)
+        self.exchange_rate = ger.get_exchange_rate(currency)
+        self.generate(account_type, balance, self.exchange_rate.exchange_rate)
         
     def generate(self, account_type, balance, exchange_rate):
         print("The used exchange rate from CHF to ",self.currency , exchange_rate)
         print("Tax report 2022 for fiscal year 2021")
-        print("**",account_type,"**", round(balance * exchange_rate, 2), "CHF")
-        
-    def get_exchange_rate(self,currency):
-        url = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/chf.json"
-        page = urlopen(url)
-        data_json = json.loads(page.read())
-        del data_json["date"]
-        del page
-        del url
-        self.exchange_rate = data_json["chf"][currency]
-        #return self.exchange_rate
-    
-    
+        print("**",account_type,"**", round(balance / exchange_rate, 2), "CHF")
 
+    
 
 if __name__ == '__main__':
     acc_name = str(input("You don't have an account yet.Enter an account name: "))
