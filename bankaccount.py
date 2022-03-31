@@ -27,18 +27,18 @@ class BankAccount():
         self.age = self.opening_date.year - self.birthdate.year - ((self.opening_date.month, self.opening_date.day) < (self.birthdate.month, self.birthdate.day))
         
     def deposit(self,amount):
-        self.balance = self.balance + float(amount)
+        self.balance = self.balance + amount
         if self.balance < 100000:
             pass
         else:
-            self.balance = self.balance - float(amount)
+            self.balance = self.balance - amount
             print("You are exceeding the maximal amount of money on your account.")
             
     def withdraw(self,amount):
-        self.balance = self.balance - float(amount)
+        self.balance = self.balance - amount
         if self.balance < 0:
             print("You are not allowed to have a negative balance on your account.")
-            self.balance = self.balance + float(amount)
+            self.balance = self.balance + amount
         else:
             pass
         
