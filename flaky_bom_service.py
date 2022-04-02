@@ -4,8 +4,6 @@ Created on Sat Apr  2 15:11:18 2022
 
 @author: Michael
 """
-
-from urllib.request import urlopen
 import requests
 import time
 
