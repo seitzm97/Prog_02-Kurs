@@ -19,7 +19,7 @@ while True:
         except Exception: #Even if the server is offline, the script will not be interrupted
             pass
         if bool(bom) == False: #Empty dictionaries evaluate to False
-            time.sleep(1)
+            time.sleep(0.5)
             pass
         else:
             break #If the dictionary contains Data, the while loop will break
