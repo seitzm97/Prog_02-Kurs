@@ -21,7 +21,7 @@ while True:
             bom = bill_of_materials()
         except Exception: #Even if the server is offline, the script will not be interrupted
             pass
-        if bool(bom) == False: #Empty dictionaries evaluate to Fals
+        if bool(bom) == False: #Empty dictionaries evaluate to False
             pass
         else:
             break #If the dictionary contains Data, the while loop will break
