@@ -14,7 +14,6 @@ def bill_of_materials():
 
 while True:  
         try:
-            bom = {}
             bom = bill_of_materials()
         except Exception: #Even if the server is offline, the script will not be interrupted
             pass
@@ -23,5 +22,5 @@ while True:
             pass
         else:
             break #If the dictionary contains Data, the while loop will break
-    
-    
+        
+print(bom.text)
