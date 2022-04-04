@@ -33,8 +33,18 @@ def data_cleaner():
     data_df = pd.DataFrame(list(data.items()), columns=['Item', 'Price'])
     data_df = data_df[pd.to_numeric(data_df['Price'], errors='coerce').notnull()]
     data_df['Price'] = data_df.Price.abs()
-    return data_df
-    
+    data_df = data_df.reset_index(drop = True)
+    old_entries = []
+    new_entries = []
+    i = 1
+    for i in range(len(data_df['Item'])):
+        old_entries.append(data_df['Item'][i])
+        i =+ 1
+    for items in range(len(old_entries)):
+        new_entries.append(old_entries[items].encode("windows-1252").decode("utf-8"))
+        items =+ 1
+    return data_df.replace(old_entries, new_entries)
+
 
 def receipt():
     df = data_cleaner()
